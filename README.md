@@ -1,9 +1,9 @@
 # ISODATA_Classifier
 Python Based Implementation of the ISODATA Classifier with GUI enabled
 
-GNR-602 Advanced Image Processing
-Group - 68
------------------------------------------------------------------------------------------------------------------
+## GNR-602 Advanced Image Processing
+### Group - 68
+
 
 We have taken Indian Pines dataset. This scene was gathered by AVIRIS sensor over the Indian Pines test site in
 North-western Indiana and consists of 145´145 pixels and 224 spectral reflectance bands in the wavelength range 
@@ -15,15 +15,22 @@ other built structures, and smaller roads.
 
 The dataset is downloaded on system which can be imported from local directory to run the code.
 
-Code files - GUI.py
-             Classifier.py
-             Executable.py
 ------------------------------------------------------------------------------------------------------------------
+## Implementation details
 
-Steps to run the program -
+* Language : python 3
+* IDE used : VS code
+* Libraries used : numpy, matplotlib.pyplot, tqdm, scipy.io (loadmat)
+
+
+## Steps to run the program -
 
 1. Execute and compile "Executable.py" which will call "GUI.py" which will further call "Classifier.py" to run the
 program.
+
+```
+$ python Executable.py
+```
 
 -------------------------------------------------------------------------------------------------------------------
 
