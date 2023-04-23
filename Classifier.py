@@ -4,7 +4,7 @@ from scipy.io import loadmat
 from tqdm import tqdm
 
 class Isodata_Classifier:
-    def __init__(self, PathToImage, parameters = None):
+    def __init__(self,  PathToImage, PathToGroundTruth, DictKeyImage = 'indian_pines_corrected', DictKeyGroundTruth = 'indian_pines_gt', parameters = None, Dictionary_Keys = None):
         
         if parameters:
             self.parameters = parameters
@@ -18,7 +18,7 @@ class Isodata_Classifier:
         self.I = self.parameters.get('I', 100)
 
         #Maximum Cluster Pair Merges That Can Be Performed
-        self.P = self.parameters.get('P', 2)
+        self.P = self.parameters.get('P', 1)
 
         #Number Of Starting Clusters
         self.k = self.parameters.get('k', self.K)
@@ -37,14 +37,16 @@ class Isodata_Classifier:
         #Threshold For Consecutive Iteration Change In Cluster [Algorithm Termination Condition]
         self.ThresholdClusterChange = self.parameters.get('ThresholdClusterChange', 0.05)
 
-        self.Read_Image(PathToImage)
+        #Initialise Required Variables
+        self.Read_Image(PathToImage, PathToGroundTruth, DictKeyImage, DictKeyGroundTruth)
         self.Build_Pixel_Data()
         self.Initialise_Means(Method = 'From Data')
         self.Initialise_Clusters()
 
-    def Read_Image(self, PathToImage):
-        self.Image = loadmat(PathToImage+'\Indian_pines_corrected.mat')['indian_pines_corrected']
-        self.GroundTruth = loadmat(PathToImage+'\Indian_pines_gt.mat')['indian_pines_gt']
+    def Read_Image(self, PathToImage, PathToGroundTruth, DictKeyImage = 'indian_pines_corrected', DictKeyGroundTruth = 'indian_pines_gt'):
+
+        self.Image = loadmat(PathToImage+'\Indian_pines_corrected.mat')[DictKeyImage]
+        self.GroundTruth = loadmat(PathToGroundTruth)[DictKeyGroundTruth]
         print(self.Image.shape)
     
     def Build_Pixel_Data(self):
