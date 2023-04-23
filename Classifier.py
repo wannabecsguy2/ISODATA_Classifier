@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import loadmat
 from tqdm import tqdm
+from PIL import Image
+from sklearn.preprocessing import normalize
 
 class Isodata_Classifier:
     def __init__(self,  PathToImage, PathToGroundTruth, DictKeyImage = 'indian_pines_corrected', DictKeyGroundTruth = 'indian_pines_gt', parameters = None, Dictionary_Keys = None):
@@ -29,10 +31,10 @@ class Isodata_Classifier:
         self.ThresholdClusterSize = self.parameters.get('ThresholdClusterSize', 10)
 
         #Threshold For Intraclass Standard Deviation [Cluster Split Condition]
-        self.ThresholdSD = self.parameters.get('ThresholSD', 100)
+        self.ThresholdSD = self.parameters.get('ThresholSD', 1)
 
         #Threshold For Pairwise Distances [Clusters Join Condition]
-        self.ThresholdDistance = self.parameters.get('ThresholdDistance', 2000)
+        self.ThresholdDistance = self.parameters.get('ThresholdDistance', 1)
 
         #Threshold For Consecutive Iteration Change In Cluster [Algorithm Termination Condition]
         self.ThresholdClusterChange = self.parameters.get('ThresholdClusterChange', 0.05)
@@ -45,7 +47,7 @@ class Isodata_Classifier:
 
     def Read_Image(self, PathToImage, PathToGroundTruth, DictKeyImage = 'indian_pines_corrected', DictKeyGroundTruth = 'indian_pines_gt'):
 
-        self.Image = loadmat(PathToImage+'\Indian_pines_corrected.mat')[DictKeyImage]
+        self.Image = loadmat(PathToImage)[DictKeyImage]
         self.GroundTruth = loadmat(PathToGroundTruth)[DictKeyGroundTruth]
         print(self.Image.shape)
     
@@ -58,6 +60,7 @@ class Isodata_Classifier:
                 self.PixelData.append(self.Image[x, y, :])
         
         self.PixelData = np.array(self.PixelData)
+        self.PixelData = normalize(self.PixelData)
     
     def Initialise_Means(self, Method = 'From Data'):
         if Method == 'Random':
@@ -217,7 +220,7 @@ class Isodata_Classifier:
             for j in range(i + 1, self.k):
                 Distances[i][j] = self.Calculate_Distance(self.ClusterMeans[i], self.ClusterMeans[j])
         self.Distances = np.array(Distances)
-        return np.unravel_index(np.argmax(self.Distances), self.Distances)
+        return np.unravel_index(np.argmax(self.Distances), self.Distances.shape)
 
     def Iterations(self):
 
@@ -245,7 +248,7 @@ class Isodata_Classifier:
                 continue
             
     def plot_band(self, band_no):
-        plt.figure(figsize = (8, 6))
+        ax, fig = plt.subplots(figsize=(8,6))
         #band_no = np.random.randint(dataset.shape[2])
         plt.imshow(self.Image[:,:,band_no], cmap = 'jet')
         plt.title(f'Band-{band_no}', fontsize = 14)
@@ -260,3 +263,8 @@ class Isodata_Classifier:
         plt.xlabel('Band Number')
         plt.ylabel('Pixel Intensity')
         plt.show()
+
+    def Save_Image(self, SavePath):
+        ClassifiedImage = self.ClusterIndices.reshape(self.Image.shape[0:2])
+        ImageToSave = Image.fromarray(ClassifiedImage)
+        ImageToSave.save(SavePath)
