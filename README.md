@@ -35,12 +35,28 @@ $ python Executable.py
 -------------------------------------------------------------------------------------------------------------------
 
 Parameters chosen - 
+```
+$ #desired_number_of_clusters 
+$ K = 16
 
-1. Desired number of clusters - 16
-2. Maximum number of iterations - 100
-3. Maximum clusters pair mergers - 1
-4. Number of Clusters starting pair - 16
-5. Threshold's cluster size - 10
-6. Threshold for Intraclass standard deciation - 100
-7. Threshold for Pairwise Distances - 2000
-8. Threshold for Consecutive Iteration Change in Cluster - 0.05
+$ #Maximum number of iterations
+$ I = 100
+
+$ #Maximum clusters pair mergers
+$ P = 1
+
+$ #Number of Clusters starting pair
+$ k = 100
+
+$ #Threshold's cluster size 
+$ ThresholdClusterSize = 10
+
+$ #Threshold for Intraclass standard deviation 
+$ ThresholSD = 100
+
+$ #Threshold for Pairwise Distances
+$ ThresholdDistance =2000
+
+$ #Threshold for Consecutive Iteration Change in Cluster
+$ ThresholdClusterChange = 0.05
+```
