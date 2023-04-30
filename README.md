@@ -1,5 +1,5 @@
 # ISODATA_Classifier
-Python Based Implementation of the ISODATA Classifier with GUI enabled
+Python Based Implementation of the ISODATA Classifier with GUI enabled (Repository is not complete and will be updated soon.)
 
 ## GNR-602 Advanced Image Processing
 ### Group - 68
